@@ -1,15 +1,24 @@
 import { useEffect } from 'react';
 import { Span, DeleteItem } from './ContactList.styled';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectContacts, selectFilter } from 'components/Redux/selectors';
+import {
+  selectContacts,
+  selectFilter,
+  selectIsLoading,
+} from 'components/Redux/selectors';
 import {
   deleteContact,
   fetchContacts,
 } from 'components/Redux/contacts/operations';
+import Loader from 'components/Loader/Loader';
 
 const ContactsList = () => {
   const contacts = useSelector(selectContacts);
   const filter = useSelector(selectFilter);
+  const isLoading = useSelector(selectIsLoading);
+
+  console.log('isLoading :>> ', isLoading);
+  console.log('contacts :>> ', contacts);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -24,6 +33,7 @@ const ContactsList = () => {
 
   return (
     <div>
+      {isLoading && <Loader />}
       {filtered?.length > 0 && (
         <ul>
           {filtered.map(({ id, name, phone }) => (

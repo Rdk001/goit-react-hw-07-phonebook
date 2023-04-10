@@ -10,6 +10,15 @@ const initialState = {
   filter: '',
 };
 
+const handePending = state => {
+  state.contacts.isLoading = true;
+};
+
+const handleRejected = (state, { payload }) => {
+  state.contacts.isLoading = false;
+  state.contacts.error = payload;
+};
+
 export const phoneBookSlice = createSlice({
   name: 'contacts',
   initialState,
@@ -19,15 +28,9 @@ export const phoneBookSlice = createSlice({
     },
   },
   extraReducers: {
-    [fetchContacts.pending]({ isLoading }) {
-      isLoading = true;
-    },
-    [addContact.pending]({ isLoading }) {
-      isLoading = true;
-    },
-    [deleteContact.pending]({ isLoading }) {
-      isLoading = true;
-    },
+    [fetchContacts.pending]: handePending,
+    [addContact.pending]: handePending,
+    [deleteContact.pending]: handePending,
     [fetchContacts.fulfilled](state, { payload }) {
       state.contacts.isLoading = false;
       state.contacts.error = null;
@@ -46,18 +49,9 @@ export const phoneBookSlice = createSlice({
       );
       state.contacts.items.splice(index, 1);
     },
-    [fetchContacts.rejected]({ error, isLoading }, { payload }) {
-      isLoading = false;
-      error = payload;
-    },
-    [addContact.rejected]({ error, isLoading }, { payload }) {
-      isLoading = false;
-      error = payload;
-    },
-    [deleteContact.rejected]({ error, isLoading }, { payload }) {
-      isLoading = false;
-      error = payload;
-    },
+    [fetchContacts.rejected]: handleRejected,
+    [addContact.rejected]: handleRejected,
+    [deleteContact.rejected]: handleRejected,
   },
 });
 
