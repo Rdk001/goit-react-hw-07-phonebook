@@ -17,9 +17,6 @@ const ContactsList = () => {
   const filter = useSelector(selectFilter);
   const isLoading = useSelector(selectIsLoading);
 
-  console.log('isLoading :>> ', isLoading);
-  console.log('contacts :>> ', contacts);
-
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchContacts());
